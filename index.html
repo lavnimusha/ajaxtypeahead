@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+    <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Ajax Type ahead</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            body{
+                background-color: #ffc40c;
+            }
+        #content{
+            position: absolute;
+            left: 30%;
+            right: 30%;
+            top: 20%;
+            width: 40%;
+            line-height: 3em;
+            border:1px solid blanchedalmond;
+        }
+        ul{ 
+            position: absolute;  
+            top: 25%;
+            left: 27%;
+            width: 40%;
+            list-style-type: none;
+        }
+        li{
+            margin:0;
+            background-color: white;
+            border: 1px solid lightgoldenrodyellow;
+            transform: skewY(0.5);
+            font-size:1.2em;
+            text-decoration: none;
+        } 
+        </style>
+    </head>
+    <body>
+        
+            <input type = "text" placeholder="Cities" value="" id = "content">
+            <ul id="section_content"></ul>
+        
+        <script>
+        
+        const url = "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+        var url_arr = []; 
+        fetch(url).then(function(result){
+            return(result.json());
+        }).then((data)=> url_arr=[...data]);
+        var section_child = document.getElementById('section_content');
+
+        document.getElementById('content').addEventListener('change',my_func);
+        document.getElementById('content').addEventListener('keyup',my_func);
+        
+        function my_func(event){
+            var result =[];
+            url_arr.filter(place=>{
+                var cityName = place.city.toLowerCase();
+                if(cityName.includes(event.target.value)){
+                    const para = `<li>
+                    <span class="name">${place.city}, ${place.state}</span>
+                    <span class="population">${place.population}</span>
+                    </li>`
+                    result.push(para);
+                }
+            })
+            section_child.innerHTML = result;
+        }
+
+        </script>
+    </body>
+</html>
